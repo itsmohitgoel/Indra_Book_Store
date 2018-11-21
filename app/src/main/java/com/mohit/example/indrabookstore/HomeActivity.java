@@ -1,16 +1,23 @@
 package com.mohit.example.indrabookstore;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
+import com.mohit.example.indrabookstore.adapters.BooksAdapter;
 import com.mohit.example.indrabookstore.beans.Book;
 import com.mohit.example.indrabookstore.data.BookContract;
 import com.mohit.example.indrabookstore.data.BookCursorWrapper;
@@ -31,8 +38,10 @@ import static com.mohit.example.indrabookstore.data.BookContract.BookEntry.TABLE
 
 public class HomeActivity extends AppCompatActivity {
 
-    @BindView(R.id.dummy_data_text_view)
-    TextView mDummyDataTextView;
+    @BindView(R.id.add_book_button)
+    FloatingActionButton mAddBookButton;
+    @BindView(R.id.books_recycler_view)
+    RecyclerView mBooksRecyclerView;
 
     private SQLiteDatabase mDatabase;
 
@@ -43,8 +52,23 @@ public class HomeActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        mBooksRecyclerView.setLayoutManager(new LinearLayoutManager(
+                this, LinearLayoutManager.VERTICAL, false));
+        BooksAdapter adapter = new BooksAdapter(this);
+        mBooksRecyclerView.setAdapter(adapter);
+
+        mAddBookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, AddEditActivity.class);
+                startActivity(intent);
+            }
+        });
+
         BookDbHelper dbHelper = new BookDbHelper(this);
         mDatabase = dbHelper.getWritableDatabase();
+
+        adapter.setBooks(getBooks());
 
         // used to debug the database values
         Stetho.initializeWithDefaults(this);
@@ -148,10 +172,29 @@ public class HomeActivity extends AppCompatActivity {
 
         if (books != null && !books.isEmpty()) {
             Book book = books.get(0);
-            mDummyDataTextView.setText(book.toString());
+//            mDummyDataTextView.setText(book.toString());
         } else {
             Toast.makeText(this, getString(R.string.toast_text_no_data_in_db),
                     Toast.LENGTH_LONG).show();
         }
     }
+
+//    private void getBooksData() {
+//        List<Book> bookList = new ArrayList<>();
+//
+//        mRemindersDataList = new ArrayList<>();
+//
+//        Cursor c = mDatabase.query(ReminderEntry.TABLE_NAME, REMINDER_COLUMNS, null, null, null, null, sortOrder);
+//        if (c.getCount() > 0) {
+//            while (c.moveToNext()) {
+//                ReminderItem item = new ReminderItem();
+//                item.setId(c.getString(COL_REM_ID));
+//                item.setName(c.getString(COL_REM_NAME));
+//                item.setCreatedOn(c.getString(COL_REM_CREATED_ON));
+//                item.setRemindOn(c.getString(COL_REM_REMIND_ON));
+//
+//                mRemindersDataList.add(item);
+//            }
+//        }
+//    }
 }

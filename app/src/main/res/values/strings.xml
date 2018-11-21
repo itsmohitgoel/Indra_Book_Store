@@ -4,4 +4,7 @@
     <string name="home_menu_label_read_dummy_data">Read First Row Data</string>
     <string name="toast_text_no_data_in_db">There is no record in DB at the moment. Please insert some data first!</string>
     <string name="home_tip_to_check_database">Tip: Use Toolbar menu for testing.</string>
+    <string name="label_price" >Price :</string>
+    <string name="dummy_quantity_value" >14</string>
+    <string name="dummy_price_value">\u20B9 343.35</string>
 </resources>
