@@ -93,9 +93,11 @@ public class AddEditActivity extends AppCompatActivity {
 
             mDeleteButton.setEnabled(true);
             mCallForOrderButton.setEnabled(true);
+            getSupportActionBar().setTitle("Edit Book Details");
         } else {
             mDeleteButton.setEnabled(false);
             mCallForOrderButton.setEnabled(false);
+            getSupportActionBar().setTitle("Add New Book");
         }
     }
 
