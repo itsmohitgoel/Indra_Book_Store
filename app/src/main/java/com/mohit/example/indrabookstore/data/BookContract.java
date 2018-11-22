@@ -11,12 +11,11 @@ import android.provider.BaseColumns;
 
 public class BookContract {
 
-    public static final String CONTENT_AUTHORITY = "com.example.mohgoel.indrabookstore.app";
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    public static final String CONTENT_AUTHORITY = "com.example.mohit.indrabookstore.app";
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PATH_BOOK = BookEntry.TABLE_NAME;
     public static final String PATH_BOOK_ID = BookEntry.TABLE_NAME + "/#";
-//    public static final String PATH_IMAGE = ImageEntry.TABLE_NAME;
 
     /* Inner class that defines the table contents of the books table */
     public static final class BookEntry implements BaseColumns {
@@ -38,14 +37,10 @@ public class BookContract {
 
         // Uri constructor to build for a specific book entry
         public static Uri buildBookUri(long id) {
-            Uri reminderUri = ContentUris.withAppendedId(CONTENT_URI, id);
-            return reminderUri;
+            Uri bookUri = ContentUris.withAppendedId(CONTENT_URI, id);
+            return bookUri;
         }
 
-        // Extract row id of book if Uri is given
-        public static long getBookIdFromUri(Uri uri) {
-            return Long.parseLong(uri.getLastPathSegment());
-        }
     }
 
 

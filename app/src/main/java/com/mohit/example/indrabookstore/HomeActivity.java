@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +41,8 @@ public class HomeActivity extends AppCompatActivity {
     FloatingActionButton mAddBookButton;
     @BindView(R.id.books_recycler_view)
     RecyclerView mBooksRecyclerView;
+    @BindView(R.id.empty_list_text_view)
+    TextView mEmptyListTextView;
 
     private SQLiteDatabase mDatabase;
 
@@ -54,8 +55,6 @@ public class HomeActivity extends AppCompatActivity {
 
         mBooksRecyclerView.setLayoutManager(new LinearLayoutManager(
                 this, LinearLayoutManager.VERTICAL, false));
-        BooksAdapter adapter = new BooksAdapter(this);
-        mBooksRecyclerView.setAdapter(adapter);
 
         mAddBookButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,14 +64,30 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        BookDbHelper dbHelper = new BookDbHelper(this);
-        mDatabase = dbHelper.getWritableDatabase();
-
-        adapter.setBooks(getBooks());
 
         // used to debug the database values
         Stetho.initializeWithDefaults(this);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BookDbHelper dbHelper = new BookDbHelper(this);
+        mDatabase = dbHelper.getWritableDatabase();
+
+        List<Book> books = getBooks();
+        if (books != null && books.size() > 0) {
+            BooksAdapter adapter = new BooksAdapter(this);
+            adapter.setBooks(books);
+            mBooksRecyclerView.setAdapter(adapter);
+            mBooksRecyclerView.setVisibility(View.VISIBLE);
+            mEmptyListTextView.setVisibility(View.GONE);
+
+        } else {
+            mBooksRecyclerView.setVisibility(View.GONE);
+            mEmptyListTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -172,29 +187,10 @@ public class HomeActivity extends AppCompatActivity {
 
         if (books != null && !books.isEmpty()) {
             Book book = books.get(0);
-//            mDummyDataTextView.setText(book.toString());
         } else {
             Toast.makeText(this, getString(R.string.toast_text_no_data_in_db),
                     Toast.LENGTH_LONG).show();
         }
     }
 
-//    private void getBooksData() {
-//        List<Book> bookList = new ArrayList<>();
-//
-//        mRemindersDataList = new ArrayList<>();
-//
-//        Cursor c = mDatabase.query(ReminderEntry.TABLE_NAME, REMINDER_COLUMNS, null, null, null, null, sortOrder);
-//        if (c.getCount() > 0) {
-//            while (c.moveToNext()) {
-//                ReminderItem item = new ReminderItem();
-//                item.setId(c.getString(COL_REM_ID));
-//                item.setName(c.getString(COL_REM_NAME));
-//                item.setCreatedOn(c.getString(COL_REM_CREATED_ON));
-//                item.setRemindOn(c.getString(COL_REM_REMIND_ON));
-//
-//                mRemindersDataList.add(item);
-//            }
-//        }
-//    }
 }

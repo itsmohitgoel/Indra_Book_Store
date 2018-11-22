@@ -3,8 +3,34 @@
     <string name="home_menu_label_insert">Insert Dummy Data</string>
     <string name="home_menu_label_read_dummy_data">Read First Row Data</string>
     <string name="toast_text_no_data_in_db">There is no record in DB at the moment. Please insert some data first!</string>
-    <string name="home_tip_to_check_database">Tip: Use Toolbar menu for testing.</string>
-    <string name="label_price" >Price :</string>
-    <string name="dummy_quantity_value" >14</string>
+    <string name="label_price">Price :</string>
+    <string name="dummy_quantity_value">14</string>
     <string name="dummy_price_value">\u20B9 343.35</string>
+
+    <string name="instruction_to_insert_data">There are no books in the database.\n
+    Please follow below Steps:\n
+    1. Press Plus Button on bottom right corner.\n
+    2. Fill in all the details and press save button</string>
+    <string name="hint_add_book_title">Add Book Title</string>
+    <string name="hint_price">Price</string>
+    <string name="label_quantity">Quantity :</string>
+    <string name="label_increment_button">+</string>
+    <string name="default_value_quantity">1</string>
+    <string name="label_decrement_button">-</string>
+    <string name="header_supplier_section">Supplier Details :</string>
+    <string name="label_supplier_name">Name :</string>
+    <string name="label_contact_number">Contact No. :</string>
+    <string name="hint_enter_name_of_supplier">Enter Name</string>
+    <string name="hint_enter_supplier_phone_number">Enter Phone No.</string>
+    <string name="label_save_button">SAVE</string>
+    <string name="label_delete_button">DELETE</string>
+    <string name="label_title_field">Title</string>
+    <string name="label_price_field">Price in Rs.</string>
+    <string name="label_sell_item">Sell Items</string>
+    <string name="label_yes_button">Yes</string>
+    <string name="label_no_button">No</string>
+    <string name="dialog_header_delete_book">Do You want to delete this Book ?</string>
+    <string name="empty_string_literal" />
+    <string name="string_value_of_indian_currency">₹</string>
+    <string name="label_quantity_field">Qty:</string>
 </resources>

@@ -16,10 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddEditActivity"></activity>
+        <activity android:name=".AddEditActivity"
+            android:parentActivityName=".HomeActivity"></activity>
 
         <provider
-            android:authorities="com.example.mohgoel.indrabookstore.app"
+            android:authorities="com.example.mohit.indrabookstore.app"
             android:name="com.mohit.example.indrabookstore.data.BookProvider" />
     </application>
 

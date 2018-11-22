@@ -20,37 +20,22 @@ public class BookProvider extends ContentProvider {
     private static final UriMatcher mUriMatcher = buildUriMatcher();
     private BookDbHelper mBookDbHelper;
 
-    static final int BOOK = 100;
-    static final int BOOK_WITH_ID = 101;
-//    static final int IMAGE = 200;
-//    static final int IMAGE_WITH_REMINDER_ID = 201;
+    private static final int BOOK = 100;
+    private static final int BOOK_WITH_ID = 101;
 
     private static final SQLiteQueryBuilder mBookQueryBuilder;
-//    private static final SQLiteQueryBuilder mReminderAndImageQueryBuilder;
 
     static {
         mBookQueryBuilder = new SQLiteQueryBuilder();
 
-        // This is a simple reminder query builder, without images informartion
+        // This is a simple book query builder, without images informartion
         mBookQueryBuilder.setTables(BookEntry.TABLE_NAME);
-
-//        // This query builder must perform inner join b/w two tables
-//        // NOTE: for each image only one reminder is present, but for single
-//        // reminder, there can be multiple images availaible
-//        mReminderAndImageQueryBuilder = new SQLiteQueryBuilder();
-//        mReminderAndImageQueryBuilder.setTables(
-//                ImageEntry.TABLE_NAME + " INNER JOIN " + ReminderEntry.TABLE_NAME +
-//                        " ON " + ImageEntry.TABLE_NAME + "." + ImageEntry.COLUMN_REMINDER_ID +
-//                        " = " + ReminderEntry.TABLE_NAME + "." + ReminderEntry._ID);
     }
 
-    public static UriMatcher buildUriMatcher() {
+    private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-
         matcher.addURI(BookContract.CONTENT_AUTHORITY, BookContract.PATH_BOOK, BOOK);
         matcher.addURI(BookContract.CONTENT_AUTHORITY, BookContract.PATH_BOOK_ID, BOOK_WITH_ID);
-//        matcher.addURI(NudgeContract.CONTENT_AUTHORITY, NudgeContract.PATH_IMAGE, IMAGE);
-//        matcher.addURI(NudgeContract.CONTENT_AUTHORITY, NudgeContract.PATH_IMAGE + "/#", IMAGE_WITH_REMINDER_ID);
 
         return matcher;
     }
@@ -70,10 +55,6 @@ public class BookProvider extends ContentProvider {
                 return BookEntry.CONTENT_TYPE;
             case BOOK_WITH_ID:
                 return BookEntry.CONTENT_ITEM_TYPE;
-//            case IMAGE:
-//                return ImageEntry.CONTENT_TYPE;
-//            case IMAGE_WITH_REMINDER_ID:
-//                return ImageEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri : " + uri);
         }
@@ -105,27 +86,10 @@ public class BookProvider extends ContentProvider {
                         null, null,
                         sortOrder);
                 break;
-//            case IMAGE:
-//                cursor = db.query(ImageEntry.TABLE_NAME,
-//                        projection,
-//                        selection,
-//                        selectionArgs,
-//                        null, null,
-//                        sortOrder);
-//                break;
-//            case IMAGE_WITH_REMINDER_ID:
-//                long reminderID = ImageEntry.getReminderIdFromImageUri(uri);
-//                String imageSelection = ImageEntry.TABLE_NAME + "." + ImageEntry.COLUMN_REMINDER_ID + " = ?";
-//                cursor = mReminderAndImageQueryBuilder.query(db,
-//                        projection,
-//                        imageSelection,
-//                        new String[]{Long.toString(reminderID)},
-//                        null, null,
-//                        sortOrder);
-//                break;
             default:
                 throw new UnsupportedOperationException("unknown uri in query() method: " + uri);
         }
+
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
@@ -148,15 +112,6 @@ public class BookProvider extends ContentProvider {
                     throw new SQLException("Failed to insert book row into: " + uri);
                 }
                 break;
-//            case IMAGE:
-//                _id = db.insert(ImageEntry.TABLE_NAME, null, values);
-//
-//                if (_id > 0) {
-//                    returnUri = ImageEntry.buildImageUriWithReminderId(_id);
-//                } else {
-//                    throw new SQLException("Failed to insert image row into " + uri);
-//                }
-//                break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);
         }
@@ -181,9 +136,6 @@ public class BookProvider extends ContentProvider {
             case BOOK:
                 deleteCount = db.delete(BookEntry.TABLE_NAME, selection, selectionArgs);
                 break;
-//            case IMAGE:
-//                deleteCount = db.delete(ImageEntry.TABLE_NAME, selection, selectionArgs);
-//                break;
             default:
                 throw new UnsupportedOperationException("unknown uri: " + uri);
         }
@@ -206,9 +158,6 @@ public class BookProvider extends ContentProvider {
             case BOOK:
                 updateCount = db.update(BookEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
-//            case IMAGE:
-//                updateCount = db.update(ImageEntry.TABLE_NAME, values, selection, selectionArgs);
-//                break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri : " + uri);
         }
@@ -242,21 +191,6 @@ public class BookProvider extends ContentProvider {
                     db.endTransaction();
                 }
                 break;
-//            case IMAGE:
-//                db.beginTransaction();
-//                try {
-//                    for (ContentValues value : values) {
-//                        long _id = db.insert(ImageEntry.TABLE_NAME, null, value);
-//
-//                        if (_id > 0) {
-//                            returnCount++;
-//                        }
-//                    }
-//                    db.setTransactionSuccessful();
-//                } finally {
-//                    db.endTransaction();
-//                }
-//                break;
             default:
                 throw new UnsupportedOperationException("Unsupported uri: " + uri);
         }
